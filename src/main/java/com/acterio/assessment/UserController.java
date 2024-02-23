@@ -23,7 +23,7 @@ public class UserController {
             return ResponseEntity.badRequest()
                     .body("Email domain should be @hotmail.com or @gmail.com or @outlook.com");
         }
-        if(!userService.isUserExistsByEmail(user.getEmail())){
+        if(userService.isUserExistsByEmail(user.getEmail())){
             return ResponseEntity.badRequest()
                     .body("User already exists.");
         }

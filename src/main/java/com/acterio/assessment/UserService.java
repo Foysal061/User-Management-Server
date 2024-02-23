@@ -20,9 +20,9 @@ public class UserService {
     public boolean isUserExistsByEmail(String email){
         UserEntity user= userRepository.findByEmail(email);
         if(user == null){
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     public void createUser(String email, String password){
