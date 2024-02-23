@@ -3,9 +3,12 @@ package com.acterio.assessment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -13,7 +16,7 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/register-user")
-    public ResponseEntity<String> registerUser(@RequestBody UserRegistrationDTO user) {
+    public ResponseEntity<String> registerUser(@RequestBody UserDTO user) {
         if (user.getEmail() == null || user.getEmail().isEmpty()) {
             return ResponseEntity.badRequest().body("Email cannot be null");
         }
@@ -34,7 +37,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserRegistrationDTO user) {
+    public ResponseEntity<String> login(@RequestBody UserDTO user) {
         if (user.getEmail() == null || user.getEmail().isEmpty()) {
             return ResponseEntity.badRequest().body("Email cannot be null");
         }
@@ -45,11 +48,16 @@ public class UserController {
             return ResponseEntity.badRequest()
                     .body("Email domain should be @hotmail.com or @gmail.com or @outlook.com");
         }
-        if (!userService.isValidLoginCredentials(user.getEmail(),user.getPassword())) {
+        if (!userService.isValidLoginCredentials(user.getEmail(), user.getPassword())) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email/password");
         }
         return ResponseEntity.ok("Login successful");
     }
 
+    @GetMapping("/domain-count")
+    public ResponseEntity<List<DomainCountDTO>> getDomainCounts() {
+        List<DomainCountDTO> domainCounts = userService.getDomainCount();
+        return ResponseEntity.ok(domainCounts);
+    }
 
 }

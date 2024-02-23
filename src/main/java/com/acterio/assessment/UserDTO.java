@@ -1,6 +1,6 @@
 package com.acterio.assessment;
 
-public class UserRegistrationDTO {
+public class UserDTO {
     private String email;
     private String password;
 
